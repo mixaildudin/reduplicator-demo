@@ -1,0 +1,19 @@
+{
+  "name": "reduplicator.demo",
+  "version": "0.1.0",
+  "description": "Демо-страница для редупликатора",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Mikhail Dudin",
+    "email": "dudin-m@live.ru"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "reduplicator": "^1.0.5"
+  }
+}

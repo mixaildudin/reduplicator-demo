@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Reduplicator test</title>
+</head>
+<body>
+	<div>Демка для npm-пакета <a href="https://www.npmjs.com/package/reduplicator" target="_blank">reduplicator</a></div>
+	<form id="form">
+		<input type="text" id="input" placeholder="Введите слово или слова" autocomplete="off" />
+		<input type="submit" value="Поехали!" />
+	</form>
+	<div id="log"></div>
+
+	<script>
+		const input = document.getElementById('input');
+
+		document.addEventListener('DOMContentLoaded', () => input.focus());
+
+		document.getElementById('form').addEventListener('submit', function(e) {
+			e.preventDefault();
+
+			if (!input.value) {
+				return;
+			}
+
+			fetch(`/action?param=${encodeURIComponent(input.value)}`, { method: 'POST' })
+				.then(response => response.text())
+				.then(result => {
+					addLogEntry(input.value, result);
+					input.value = '';
+				})
+				.catch(err => alert('Error: ' + err));
+		});
+
+		function addLogEntry(input, output) {
+			const logNode = document.getElementById('log');
+			log.innerHTML = `> ${input}<br />${(output || 'null')}<br /><br />` + log.innerHTML;
+		}
+	</script>
+</body>
+</html>
