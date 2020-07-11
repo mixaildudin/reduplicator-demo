@@ -1,6 +1,5 @@
 const http = require('http');
 const url = require('url');
-const config = require('./config.json');
 const static = require('node-static');
 
 const DynamicStressManager = require('reduplicator').DynamicStressManager;
@@ -38,15 +37,13 @@ const server = http.createServer((request, response) => {
 	file.serve(request, response);
 });
 
-if (!config.port) {
-	throw new Error('No port specified');
-}
+const port = process.env.PORT || 3000;
 
-server.listen(config.port, error => {
+server.listen(port, error => {
 	if (error) {
 		console.log(`Could not start server: ${err}`);
 		return;
 	}
 
-	console.log(`Server listening on port ${config.port}`);
+	console.log(`Server listening on port ${port}`);
 });
