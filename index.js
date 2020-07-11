@@ -28,7 +28,12 @@ const server = http.createServer((request, response) => {
 		console.log(`${new Date()}: ${param}`);
 
 		const words = param.replace(/[^\p{L}\d ]/ug, '').split(/\s+/).filter(item => !!item);
-		const result = words.map(w => r.reduplicate(w) || w).join(' ');
+		let result;
+		if (words.length > 1) {
+			result = words.map(w => r.reduplicate(w) || w).join(' ');
+		} else {
+			result = r.reduplicate(words[0]);
+		}
 
 		response.end(result);
 		return;
@@ -37,7 +42,10 @@ const server = http.createServer((request, response) => {
 	file.serve(request, response);
 });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
+if (!port) {
+	throw new Error('No port specified');
+}
 
 server.listen(port, error => {
 	if (error) {
