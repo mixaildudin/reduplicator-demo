@@ -1,5 +1,6 @@
 const http = require('http');
 const url = require('url');
+const config = require('./config.json');
 const static = require('node-static');
 
 const DynamicStressManager = require('reduplicator').DynamicStressManager;
@@ -15,8 +16,6 @@ console.log('Reduplicator initialized');
 const file = new static.Server('./public');
 
 const server = http.createServer((request, response) => {
-	console.log(request.url);
-
 	const q = url.parse(request.url, true);
 
 	if (request.method === 'POST' && q.pathname === '/action') {
@@ -27,10 +26,10 @@ const server = http.createServer((request, response) => {
 		}
 
 		param = decodeURIComponent(param);
-		console.log(param);
+		console.log(`${new Date()}: ${param}`);
 
 		const words = param.replace(/[^\p{L}\d ]/ug, '').split(/\s+/).filter(item => !!item);
-		const result = words.map(w => r.reduplicate(w)).join(' ');
+		const result = words.map(w => r.reduplicate(w) || w).join(' ');
 
 		response.end(result);
 		return;
@@ -39,11 +38,15 @@ const server = http.createServer((request, response) => {
 	file.serve(request, response);
 });
 
-server.listen(3000, error => {
+if (!config.port) {
+	throw new Error('No port specified');
+}
+
+server.listen(config.port, error => {
 	if (error) {
 		console.log(`Could not start server: ${err}`);
 		return;
 	}
 
-	console.log('Server started');
+	console.log(`Server listening on port ${config.port}`);
 });
