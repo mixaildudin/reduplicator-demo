@@ -14,6 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "node-static": "^0.7.11",
-    "reduplicator": "^1.1.1"
+    "reduplicator": "^1.2.0"
   }
 }
